@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+    <title>Static Map Generator</title>
+    <!-- Date: 2013-11-23 -->
+    <meta name="author" content="Tom Henderson">
+    <meta name="description" content="">
+
+    <!-- Styles -->
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style type="text/css">
+        .top-buffer { margin-top:20px; }
+    </style>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div class="container">
+    <h1>Static Map Generator</h1>
+
+    <div class="row">
+        <form role="form" class="col-md-12">
+            <div class="form-group">
+                <label for="address">Address</label>
+                <input type="text" class="form-control" id="address">
+            </div>
+            <div class="form-group row">
+                <div class="col-md-2 col-sm-4">
+                    <label for="width">Width</label>
+                    <div class="input-group">
+                        <input type="text" id="width" class="form-control" value="400">
+                        <span class="input-group-addon">px</span>
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-4">
+                    <label for="height">Height</label>
+                    <div class="input-group">
+                        <input type="text" id="height" class="form-control" value="400">
+                        <span class="input-group-addon">px</span>
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-4">
+                    <label for="zoom">Zoom</label>
+                    <select id="zoom" class="form-control">
+                        <option value="1">1 (Far)</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13" selected>13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                        <option value="16">16</option>
+                        <option value="17">17</option>
+                        <option value="18">18</option>
+                        <option value="19">19</option>
+                        <option value="20">20</option>
+                        <option value="21">21 (Close)</option>
+                    </select>
+                </div>
+                <div class="col-md-2 col-sm-4">
+                    <label for="style">Map Style</label>
+                    <select id="style" class="form-control">
+                        <option value="roadmap" selected>road map</option>
+                        <option value="satellite">satellite</option>
+                        <option value="hybrid">hybrid</option>
+                        <option value="terrain">terrain</option>
+                    </select>
+                </div>
+                <div class="col-md-2 col-sm-4">
+                    <label for="format">Image Format</label>
+                    <select id="format" class="form-control">
+                        <option value="png" selected>png</option>
+                        <option value="png32">png32</option>
+                        <option value="gif">gif</option>
+                        <option value="jpg">jpg</option>
+                        <option value="jpg-baseline">jpg-baseline</option>
+                    </select>
+                </div>
+                <div class="col-md-2 col-sm-4">
+                    <label for="format">&nbsp;</label>
+                    <button type="button" id="add-marker" class="btn btn-default btn-block"><span class="glyphicon glyphicon-plus-sign"></span> Add Marker</button>
+                </div>
+            </div>
+            <div class="form-group row map-marker" id="marker-1" style="display: none;">
+                <div class="col-md-8 col-sm-8">
+                    <label for="marker-1-location">Marker 1 Location</label>
+                    <input type="text" class="form-control" id="marker-1-location">
+                </div>
+                <div class="col-md-2 col-sm-2">
+                    <label for="marker-1-colour">Colour</label>
+                    <select id="marker-1-colour" class="form-control">
+                        <option value="red" selected>red</option>
+                        <option value="orange">orange</option>
+                        <option value="yellow">yellow</option>
+                        <option value="green">green</option>
+                        <option value="blue">blue</option>
+                        <option value="purple">purple</option>
+                        <option value="brown">brown</option>
+                        <option value="black">black</option>
+                        <option value="white">white</option>
+                        <option value="gray">gray</option>
+                    </select>
+                </div>
+                <div class="col-md-2 col-sm-2">
+                    <label for="format">&nbsp;</label>
+                    <button type="button" id="delete-marker-1" target="marker-1" class="btn btn-danger btn-block delete-marker"><span class="glyphicon glyphicon-minus-sign"></span> Remove</button>
+                </div>
+            </div>
+            <div class="row top-buffer">
+                <div class="col-md-2 col-sm-4">
+                    <button type="button" id="action-button" class="btn btn-success btn-block">Create Map</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="row" id="results" style="display:none;">
+        <div class="col-md-8">
+            <h3>Image Code</h3>
+            <pre id="image-code"></pre>
+            <h3>Dokuwiki Link Code</h3>
+            <pre id="wiki-code"></pre>
+        </div>
+        <div class="col-md-4">
+            <h3>Preview</h3>
+            <img id="map-preview" src="#" class="img-responsive">
+        </div>
+    </div>
+
+</div>
+    <!-- Javascript -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+    <script language="javascript">
+        $("#add-marker").on("click", function(){
+            $("#marker-1").slideDown();
+            $("#marker-1-location").val( $("#address").val() );
+        });
+
+        $(".delete-marker").on("click", function(){
+            var target = "#" + $(this).attr("target");
+            $(target).slideUp();
+            $(target + "-location").val( "" );
+        });
+
+        $("#action-button").on("click", function(){
+            var base_url = "http://maps.googleapis.com/maps/api/staticmap";
+            var address = "?center=" + encodeURIComponent( $("#address").val() );
+            var size    = "&size=" + encodeURIComponent( $("#width").val() ) + "x" + encodeURIComponent( $("#height").val() );
+            var zoom    = "&zoom=" + encodeURIComponent( $("#zoom").val() );
+            var style   = "&maptype=" + encodeURIComponent( $("#style").val() );
+            var format  = "&format=" + encodeURIComponent( $("#format").val() );
+
+            var marker = '';
+            if ( $("#marker-1-location").val() != "" ) {
+                var marker = "&markers=color:" + encodeURIComponent( $("#marker-1-colour").val() ) + "%7C" + encodeURIComponent( $("#marker-1-location").val() );
+            };
+
+            var image_url = base_url + address + size + zoom + style + format + marker + "&sensor=false";
+            var map_url = "https://maps.google.co.nz/maps?q" + encodeURIComponent( $("#address").val() );
+            var wiki_code = "[[" + map_url + "|{{" + image_url + "&.png?}}]]";
+
+            $("#results").slideDown();
+
+            $("#image-code").html( image_url );
+            $("#wiki-code").html( wiki_code );
+            $("#map-preview").attr( "src", image_url );
+        });
+    </script>
+</body>
+
+</html>
