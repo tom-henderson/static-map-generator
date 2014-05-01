@@ -1,0 +1,2 @@
+static-map-generator
+====================
