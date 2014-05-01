@@ -137,7 +137,13 @@
         <div class="col-md-8">
             <h3>Image Code</h3>
             <pre id="image-code"></pre>
-            <h3>Dokuwiki Link Code</h3>
+            <h3>Dokuwiki Link Code
+            <div class="btn-group" id="dokuwiki-alignment">
+                <button type="button" class="btn btn-default active"><span class="glyphicon glyphicon-align-left"></span></button>
+                <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-align-center"></span></button>
+                <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-align-right"></span></button>
+                <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-align-justify"></span></button>
+              </div></h3>
             <pre id="wiki-code"></pre>
         </div>
         <div class="col-md-4">
@@ -184,6 +190,11 @@
             $("#image-code").html( image_url );
             $("#wiki-code").html( wiki_code );
             $("#map-preview").attr( "src", image_url );
+        });
+
+        $("#dokuwiki-alignment button").on("click", function() {
+            $("#dokuwiki-alignment button").removeClass("active");
+            $(this).addClass("active");
         });
     </script>
 </body>
