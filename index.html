@@ -137,6 +137,8 @@
         <div class="col-md-8">
             <h3>Image Code</h3>
             <pre id="image-code"></pre>
+            <h3>Link Code</h3>
+            <pre id="link-code"></pre>
             <h3>Dokuwiki Link Code
             <div class="btn-group" id="dokuwiki-alignment">
                 <button type="button" class="btn btn-default active"><span class="glyphicon glyphicon-align-left"></span></button>
@@ -191,6 +193,7 @@
             $("#results").slideDown();
 
             $("#image-code").html( image_url );
+            $("#link-code").html( map_url );
             $("#wiki-code").html( wiki_code );
             $("#map-preview").attr( "src", image_url );
         });
