@@ -169,7 +169,7 @@
         });
 
         $("#action-button").on("click", function(){
-            var base_url = "http://maps.googleapis.com/maps/api/staticmap";
+            var base_url = "https://maps.googleapis.com/maps/api/staticmap";
             var address = "?center=" + encodeURIComponent( $("#address").val() );
             var size    = "&size=" + encodeURIComponent( $("#width").val() ) + "x" + encodeURIComponent( $("#height").val() );
             var zoom    = "&zoom=" + encodeURIComponent( $("#zoom").val() );
